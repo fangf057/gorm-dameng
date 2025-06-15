@@ -284,3 +284,40 @@ func (d Dialector) SavePoint(tx *gorm.DB, name string) error {
 func (d Dialector) RollbackTo(tx *gorm.DB, name string) error {
 	return tx.Exec("ROLLBACK TO SAVEPOINT " + name).Error
 }
+
+// 在 dm.go 中添加 SQL 转换辅助函数
+func convertMySQLToDameng(sql string) string {
+	return strings.ReplaceAll(sql, "`", "\"")
+}
+
+// 重写 Exec 方法
+func (dialector Dialector) Exec(db *gorm.DB) (sql.Result, error) {
+	if db.Statement.SQL.Len() > 0 {
+		originalSQL := db.Statement.SQL.String()
+		convertedSQL := convertMySQLToDameng(originalSQL)
+		db.Statement.SQL.Reset()
+		db.Statement.SQL.WriteString(convertedSQL)
+	}
+
+	return db.Statement.ConnPool.ExecContext(
+		db.Statement.Context,
+		db.Statement.SQL.String(),
+		db.Statement.Vars...,
+	)
+}
+
+// 重写 Query 方法
+func (dialector Dialector) Query(db *gorm.DB) (*sql.Rows, error) {
+	if db.Statement.SQL.Len() > 0 {
+		originalSQL := db.Statement.SQL.String()
+		convertedSQL := convertMySQLToDameng(originalSQL)
+		db.Statement.SQL.Reset()
+		db.Statement.SQL.WriteString(convertedSQL)
+	}
+
+	return db.Statement.ConnPool.QueryContext(
+		db.Statement.Context,
+		db.Statement.SQL.String(),
+		db.Statement.Vars...,
+	)
+}
