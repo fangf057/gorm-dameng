@@ -14,8 +14,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/fangf057/gorm-dameng/dm8/parser"
-	"github.com/fangf057/gorm-dameng/dm8/util"
+	"github.com/godoes/gorm-dameng/dm8/parser"
+	"github.com/godoes/gorm-dameng/dm8/util"
 	"golang.org/x/text/encoding"
 )
 

@@ -16,7 +16,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fangf057/gorm-dameng/dm8/util"
+	"github.com/godoes/gorm-dameng/dm8/util"
 )
 
 type ExecuteTypeEnum int

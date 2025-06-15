@@ -1,9 +1,8 @@
-module github.com/fangf057/gorm-dameng
+module github.com/godoes/gorm-dameng
 
 go 1.20
 
 require (
-	github.com/godoes/gorm-dameng v0.6.2
 	github.com/golang/snappy v1.0.0
 	golang.org/x/text v0.22.0
 	gorm.io/gorm v1.30.0
